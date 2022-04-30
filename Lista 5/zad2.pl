@@ -1,3 +1,6 @@
+% board([1, 3, 5, 4, 4, 2]).
+% hetmany(6, X), board(X).
+
 board(L) :-
     length(L, N),
     biggerLoop(L, N, N).

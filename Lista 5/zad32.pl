@@ -8,8 +8,9 @@ browse(CurrNode, LeftSib, RightSib):-
     write('command: '),
     read(Cmd),
     inCmd(Cmd, CurrNode),
-    npCmd(Cmd, CurrNode, LeftSib, RightSib, MatchedNP),
-    outCmd(Cmd, CurrNode, LeftSib, RightSib, MatchedNP).
+    outCmd(Cmd, CurrNode, LeftSib, RightSib, MatchedNP),
+    (nextCmd(Cmd, CurrNode, LeftSib, RightSib, MatchedNP);
+    prevCmd(Cmd, CurrNode, LeftSib, RightSib, MatchedNP)).
 
 
 inCmd(Cmd, CurrNode) :-
@@ -18,13 +19,13 @@ inCmd(Cmd, CurrNode) :-
      browse(CurrNode1, [], RightSib1), !
     ); true).
 
-npCmd(Cmd, CurrNode, LeftSib, RightSib, MatchedNP) :-
+nextCmd(Cmd, CurrNode, LeftSib, RightSib, MatchedNP) :-
         (next(Cmd),
         RightSib = [Next|RightSib2],
         MatchedNP is 1,
         append([CurrNode], LeftSib, LeftSib2),
         browse(Next, LeftSib2, RightSib2), !);
-        prevCmd(Cmd, CurrNode, LeftSib, RightSib, MatchedNP).
+        browse(CurrNode, LeftSib, RightSib).
 
 prevCmd(Cmd, CurrNode, LeftSib, RightSib, MatchedNP) :-
         (prev(Cmd),
@@ -32,12 +33,10 @@ prevCmd(Cmd, CurrNode, LeftSib, RightSib, MatchedNP) :-
         MatchedNP is 1,
         append([CurrNode], RightSib, RightSib2),
         browse(Prev, LeftSib2, RightSib2), !);
-        MatchedNP is 0.
+        browse(CurrNode, LeftSib, RightSib).
 
 outCmd(Cmd, CurrNode, LeftSib, RightSib, MatchedNP) :-
-    (out(Cmd); MatchedNP = 1, !);
-    browse(CurrNode, LeftSib , RightSib).
-
+    (out(Cmd); true).
 in(i).
 out(o).
 next(n).
