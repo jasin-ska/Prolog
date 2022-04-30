@@ -1,3 +1,5 @@
+% open("ex1.prog", read, X), scanner(X, Y), close(X), write(Y).
+
 sepChars("\n \t;").
 
 scanner(Input, List) :-
@@ -17,7 +19,7 @@ addToken(String, List, List2) :-
     token(String, Token),
     append(List, Token, List2).
 
-token(String, [Token|[]]) :-
+token(String, [Token]) :-
     (key(String), atom_string(At, String), Token = key(At), !);
     (sep(String), atom_string(At, String), Token = sep(At), !);
     (number_string(Nr, String), integer(Nr), Nr>=0, Token = int(Nr), !);
@@ -25,7 +27,6 @@ token(String, [Token|[]]) :-
 
 
 id(String) :-
-    %atom_string(String, String2),
     string_upper(String, String).
 
 key("read").
