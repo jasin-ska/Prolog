@@ -6,13 +6,6 @@ small(L) :-
 	W is N + 3, nth1(3, L, W),
 	E is N + 4, nth1(4, L, E).
 
-small(L, N) :-
-	N < 17,
-	N mod 7 < 3, member(N, L),
-	S is N + 7, member(S, L), S < 24,
-	W is N + 3, member(W, L),
-	E is N + 4, member(E, L).
-
 medium(L) :-
 	L = [0, 1, 14, 15, 3, 10, 5, 12];
 	L = [1, 2, 15, 16, 4, 11, 6, 13];
@@ -27,13 +20,17 @@ getSet(K, B, M, S, SetOut) :- % Big, Medium, Small
 	B>=0, B=<1,
 	M>=0, M=<4,
 	S>=0, S=<9,
+	%R is 24 - K,
         (B = 1 -> big(Set) ; Set = []), !,
+	%length(Set, L1), L1 =< R,
 	distinct(add2(Set, M, [], Set2)),
+	%length(Set2, L2), L2 =< R,
 	%draw(Set2),
 	countSmalls(Set2, SmallNr),
 	SmallNr =< S,
 	S2 is S - SmallNr,
 	add3(Set2, S2, Set2, Set3, SmallNr),
+	%length(Set3, R),
 	length(Set3, LenSet),
         K is 24 - LenSet,
 	sort(Set3, SetOut).
